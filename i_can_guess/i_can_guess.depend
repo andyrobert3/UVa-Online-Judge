@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1518097707 source:e:\nus\semester 2\cs2040c\uva\i_can_guess\main.cpp
+	<queue>
+	<stack>
+	<iostream>
+
