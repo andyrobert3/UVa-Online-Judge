@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1521360413 source:e:\nus\semester 2\cs2040c\uva\do_your_own_homework\main.cpp
+	<iostream>
+	<unordered_map>
+

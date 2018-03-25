@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1521563649 source:e:\nus\semester 2\cs2040c\uva\word_index\main.cpp
+	<iostream>
+	<queue>
+	<unordered_map>
+

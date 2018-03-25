@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1521567048 source:e:\nus\semester 2\cs2040c\uva\updating_a_dictionary\main.cpp
+	<iostream>
+	<sstream>
+	<map>
+

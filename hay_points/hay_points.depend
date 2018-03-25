@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1521567556 source:e:\nus\semester 2\cs2040c\uva\hay_points\main.cpp
+	<iostream>
+	<unordered_map>
+
