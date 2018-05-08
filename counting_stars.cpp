@@ -3,149 +3,52 @@
 
 using namespace std;
 	
-vector<vector<char>> sky;
+vector<string> sky;
 int numR, numC;
+int asterisks;
 
-/*
-bool checkStar(int i, int j) {
-	
-	bool isStar = true;
-	
-	// top of sky
-	if (i == 0) {
-		// upper left
-		if (j == 0) {
-			
-			if (sky[i][j+1] == '*')	isStar = false;
-			if (sky[i+1][j+1] == '*') isStar = false;
-			if (sky[i+1][j] == '*')	isStar = false;
-			
-			if (isStar)	return true;		
-		} else if (j == numC-1) {
-			// upper right
-			
-			if (sky[i][j-1] == '*')	isStar = false;
-			if (sky[i+1][j-1] == '*') isStar = false;
-			if (sky[i+1][j] == '*')	isStar = false;
-			
-			if (isStar)	return true;
-			
-		} else {
-			if (sky[i][j-1] == '*')	isStar = false;
-			if (sky[i][j+1] == '*') isStar = false;
-			if (sky[i+1][j] == '*')	isStar = false;
-			if (sky[i+1][j+1] == '*')	isStar = false;
-			if (sky[i+1][j-1] == '*')	isStar = false;
-		
-			if (isStar) return true;
-		}
-	} else if (i == numR - 1) {
-		// bottom left
-		if (j == 0) {
-			if (sky[i][j+1] == '*')	isStar = false;
-			if (sky[i-1][j+1] == '*') isStar = false;
-			if (sky[i-1][j] == '*')	isStar = false;
-			
-			if (isStar) return true;
+int iDir[8] = {0, 0, 1, 1, 1, -1, -1, -1};
+int jDir[8] = {1, -1, 0, 1, -1, 0, 1, -1};
 
-		} else if (j == numC-1) {
-			// bottom right
-			if (sky[i][j-1] == '*')	isStar = false;
-			if (sky[i-1][j-1] == '*') isStar = false;
-			if (sky[i-1][j] == '*')	isStar = false;
-			
-			if (isStar) return true;
-
-		} else {
-			// bottom
-			if (sky[i][j-1] == '*')	isStar = false;
-			if (sky[i][j+1] == '*') isStar = false;
-			if (sky[i-1][j] == '*')	isStar = false;
-			if (sky[i-1][j+1] == '*')	isStar = false;
-			if (sky[i-1][j-1] == '*')	isStar = false;
-		
-			if (isStar) return true;
-		}
-	} else {
-		// left
-		if (j == 0) {
-			if (sky[i][j+1] == '*')	isStar = false;
-			if (sky[i+1][j+1] == '*') isStar = false;
-			if (sky[i+1][j] == '*')	isStar = false;
-			if (sky[i-1][j] == '*')	isStar = false;
-			if (sky[i-1][j+1] == '*')	isStar = false;
-		
-			if (isStar) return true;
-		} else if (j == numC-1) {
-			// right
-			if (sky[i][j-1] == '*')	isStar = false;
-			if (sky[i-1][j] == '*') isStar = false;
-			if (sky[i-1][j-1] == '*')	isStar = false;
-			if (sky[i+1][j] == '*')	isStar = false;
-			if (sky[i+1][j-1] == '*')	isStar = false;
-		
-			if (isStar) return true;
-		} else {
-			// all 8 parts check
-			if (sky[i][j-1] == '*')	isStar = false;
-			if (sky[i][j+1] == '*')	isStar = false;
-			if (sky[i+1][j] == '*')	isStar = false;
-			if (sky[i+1][j-1] == '*')	isStar = false;
-			if (sky[i+1][j+1] == '*')	isStar = false;
-			if (sky[i-1][j] == '*')	isStar = false;
-			if (sky[i-1][j-1] == '*')	isStar = false;
-			if (sky[i-1][j+1] == '*')	isStar = false;
-			
-			if (isStar)	return true;			
-		}
-	}
-	
-	return isStar;
-}
-*/
-
-// returns size of connected components
-int floodfill (int i, int j, int prevC, int newC) {
-	if (i < 0 || i >= numR || j < 0 || j >= numC)	return 0;
-	if (sky[i][j] != prevC)							return 0;	
+void floodfill(int i, int j, char prevC, char newC) {
+	if (i < 0 || i >= numR || j < 0 || j >= numC) 	return;
+	if (sky[i][j] != prevC)							return;
 	
 	sky[i][j] = newC;
+	asterisks++;
 	
-	int ans = 1;	// one star is found
-	return (ans + floodfill(i, j+1, prevC, newC) + floodfill(i, j-1, prevC, newC)
-			+ floodfill(i+1, j+1, prevC, newC) + floodfill(i+1, j-1, prevC, newC)
-			+ floodfill(i+1, j, prevC, newC) + floodfill(i-1, j+1, prevC, newC)
-			+ floodfill(i-1, j, prevC, newC) + floodfill(i-1, j-1, prevC, newC));
-	
-}
+	for (int k = 0; k < 8; k++) {
+		floodfill(i+iDir[k], j+jDir[k], prevC, newC);	
+	}
+}	
+
 
 int main() {
+	string line;
 	
 	while (cin >> numR >> numC) {
 		if (numR == 0 && numC == 0)	break;
-		//cin.get();
-		
-		sky.assign(numR, vector<char>());
-		for (auto &it: sky) {
-			it.assign(numC, '.');
-		}
+		sky.clear();
 		
 		for (int i = 0; i < numR; i++) {
-			for (int j = 0; j < numC; j++) {
-				cin >> sky[i][j];
-			}
+			cin >> line;
+			sky.push_back(line);
 		}
 		
-		int CC = 0;
+		int ans = 0;
 		for (int i = 0; i < numR; i++) {
 			for (int j = 0; j < numC; j++) {
-				if (sky[i][j] == '*')
-					if (floodfill(i, j, '*', '@') == 1) 
-						CC++;
+				if (sky[i][j] == '*') {
+					asterisks = 0;
 					
+					floodfill(i, j, '*', '@');
+					
+					if (asterisks == 1)	
+						ans++;
+				}
 			}
 		}
 		
-		cout << CC << endl;
+		cout << ans << endl;
 	}
 }
